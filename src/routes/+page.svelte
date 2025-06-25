@@ -23,19 +23,21 @@
 
 </script>
 
-<div class="flex h-screen">
-    <LeftSidebar change_view={change_view} />
+<div class="relative h-screen">
+    <div class="fixed left-0 top-0 h-full z-50">
+        <LeftSidebar change_view={change_view} />
+    </div>
 
-    <main class="flex-1 flex items-center justify-center bg-surface-50">
-    {#if current_view === 'none'}
-        <div class="text-center">
-            <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
-            <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
-        </div>
-	{:else if current_view === 'rageborne'}
-		<div class="flex-1">
-			<RageborneView />
-		</div>
-	{/if}
+    <main class="h-full pl-0 flex items-center justify-center bg-surface-50">
+        {#if current_view === 'none'}
+            <div class="text-center">
+                <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
+                <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
+            </div>
+        {:else if current_view === 'rageborne'}
+            <div class="flex-1">
+                <RageborneView />
+            </div>
+        {/if}
     </main>
 </div>
