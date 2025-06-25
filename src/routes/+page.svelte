@@ -1,16 +1,41 @@
-<script>
-    import LeftSidebar from '$lib/components/LeftSidebar.svelte';
+<script lang="ts">
+    import LeftSidebar from '$lib/components/left_sidebar.svelte';
+    import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
+    import type { Nemesis } from '$lib/data/nemesis_data';
   
-    const sidebarItems = ['Dashboard', 'Profile', 'Settings', 'Analytics', 'Help'];
+    var current_view: Nemesis = 'none';
+
+    function change_view(item: string) {
+        switch (item) {
+            case 'Rageborne':
+                current_view = 'rageborne';
+                break;
+            case 'Carapace Queen':
+                current_view = 'carapace_queen';
+                break;
+            case 'Soon':
+                current_view = 'none';
+                break;
+            default:
+                current_view = 'none';
+        }
+    }
+
 </script>
 
 <div class="flex h-screen">
-    <LeftSidebar items={sidebarItems} />
-  
+    <LeftSidebar change_view={change_view} />
+
     <main class="flex-1 flex items-center justify-center bg-surface-50">
+    {#if current_view === 'none'}
         <div class="text-center">
-        <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
-        <p class="text-surface-600">Choose an item on the left sidebar</p>
+            <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
+            <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
         </div>
+	{:else if current_view === 'rageborne'}
+		<div class="flex-1">
+			<RageborneView />
+		</div>
+	{/if}
     </main>
 </div>
