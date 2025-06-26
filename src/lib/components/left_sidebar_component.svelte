@@ -13,6 +13,11 @@
         }
     }
 
+    function onItemClick(item: string) {
+        change_view(item);
+        toggleSidebar();
+    }
+
 </script>
 
 <div class="bg-gray-800 text-white h-screen transition-all duration-300 ease-in-out drop-shadow-2xl 
@@ -32,7 +37,7 @@
             {#each sidebar_items as item}
                 <button 
                     class="w-full p-3 text-left hover:bg-gray-700 rounded transition-colors"
-                    on:click={() => change_view(item)}
+                    on:click={() => onItemClick(item)}
                 >
                     {item}
                 </button>

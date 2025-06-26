@@ -30,7 +30,7 @@ export const tier_1_cards: NemesisCard[] = [
     {
         type: 'power',
         title: 'Miasma of Rot',
-        description: 'TO DISCARD: Spend 6.\nPOWER 2: Unleash.\nAny plater gains a Scorched Pearl from the Curse deck.',
+        description: 'TO DISCARD: Spend 6.\nPOWER 2: Unleash. Any player gains a Scorched Pearl from the Curse deck.',
         tier: 1,
         power: 2,
         upgraded: false,

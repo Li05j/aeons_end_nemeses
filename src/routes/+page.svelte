@@ -1,5 +1,5 @@
 <script lang="ts">
-    import LeftSidebar from '$lib/components/left_sidebar.svelte';
+    import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
     import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
     import type { Nemesis } from '$lib/data/nemesis_data';
   
@@ -28,7 +28,7 @@
         <LeftSidebar change_view={change_view} />
     </div>
 
-    <main class="h-full pl-0 flex items-center justify-center bg-surface-50">
+    <main class="h-full pl-16 pr-8 flex items-center justify-center bg-surface-50">
         {#if current_view === 'none'}
             <div class="text-center">
                 <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
