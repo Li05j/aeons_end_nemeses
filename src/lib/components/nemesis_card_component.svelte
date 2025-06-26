@@ -41,12 +41,21 @@
         <p class="whitespace-pre-line pb-4">{card_data.description}</p>
         
         <div class="space-y-2">
-            {#if card_data.type === 'power'}
+            {#if card_data.type === 'attack'}
                 <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                <p class="text-sm">Power: {power_left}</p>
+                <p class="text-sm text-right">Tier: {card_data.tier}</p>
+            {:else if card_data.type === 'power'}
+                <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
+                <div class="flex justify-between items-center">
+                    <p class="text-sm">Power: {power_left}</p>
+                    <p class="text-sm text-right">Tier: {card_data.tier}</p>
+                </div>
             {:else if card_data.type === 'minion'}
                 <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                <p class="text-sm">Health: {minion_hp}</p>
+                <div class="flex justify-between items-center">
+                    <p class="text-sm">Health: {minion_hp}</p>
+                    <p class="text-sm text-right">Tier: {card_data.tier}</p>
+                </div>
             {/if}
         </div>
     </div>
