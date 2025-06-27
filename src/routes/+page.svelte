@@ -35,7 +35,7 @@
                 <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
             </div>
         {:else if current_view === 'rageborne'}
-            <div class="flex-1">
+            <div class="flex-1 h-full p-4">
                 <RageborneView />
             </div>
         {/if}
