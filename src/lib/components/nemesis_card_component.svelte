@@ -58,14 +58,20 @@
                     <p class="text-sm text-right">Tier: {card_data.tier}</p>
                 {:else if card_data.type === 'power'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                    <div class="flex justify-between items-center">
-                        <p class="text-sm">Power: {card_data.power}</p>
+                        <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                        <span class="text-sm">Power:</span>
+                        <input type="number" bind:value={card_data.power} class="w-16 text-center border rounded px-1" min="-1">
+                        </div>
                         <p class="text-sm text-right">Tier: {card_data.tier}</p>
                     </div>
                 {:else if card_data.type === 'minion'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
                     <div class="flex justify-between items-center">
-                        <p class="text-sm">Health: {card_data.health}</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm">Health:</span>
+                            <input type="number" bind:value={card_data.health} class="w-16 text-center border rounded px-1" min="0">
+                        </div>
                         <p class="text-sm text-right">Tier: {card_data.tier}</p>
                     </div>
                 {/if}

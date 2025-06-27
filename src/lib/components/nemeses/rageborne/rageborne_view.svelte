@@ -5,13 +5,24 @@
     import NemesisCardComponent from '$lib/components/nemesis_card_component.svelte';
     import type { NemesisCard } from '$lib/interface';
 
+
+    // To prevent rapid clicking on Next Turn button
+    let isOnCooldown = false;
+    
+    function nextTurnClickCooldown() {
+        if (isOnCooldown) return;
+        
+        // Start cooldown
+        isOnCooldown = true;
+        setTimeout(() => {
+            isOnCooldown = false;
+        }, 750);
+    }
+
+
     const TOTAL_T1_CARDS = 3;
     const TOTAL_T2_CARDS = 3;
     const TOTAL_T3_CARDS = 3;
-
-    // let t1_deck: NemesisCard[] = [];
-    // let t2_deck: NemesisCard[] = [];
-    // let t3_deck: NemesisCard[] = [];
 
     let combined_deck: NemesisCard[] = [];
     let current_card: NemesisCard | undefined = undefined;
@@ -33,6 +44,7 @@
     });
     
     function next_turn() {
+        nextTurnClickCooldown();
         if (combined_deck.length > 0) {
             if (current_card) { resolved_deck.push(current_card); }
             current_card = combined_deck.shift();
@@ -99,8 +111,9 @@
     </div>
 
     <button 
-        class="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded"
+        class="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
         on:click={() => next_turn()}
+        disabled={isOnCooldown}
     >
         Next Turn ({combined_deck.length} cards left)
     </button>
