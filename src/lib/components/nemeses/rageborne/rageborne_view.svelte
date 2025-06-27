@@ -9,11 +9,11 @@
     const TOTAL_T2_CARDS = 3;
     const TOTAL_T3_CARDS = 3;
 
-    let t1_deck: NemesisCard[] = [];
-    let t2_deck: NemesisCard[] = [];
-    let t3_deck: NemesisCard[] = [];
+    // let t1_deck: NemesisCard[] = [];
+    // let t2_deck: NemesisCard[] = [];
+    // let t3_deck: NemesisCard[] = [];
 
-    let combined_deck: NemesisCard[] = [...t1_deck, ...t2_deck, ...t3_deck];
+    let combined_deck: NemesisCard[] = [];
     let current_card: NemesisCard | undefined = undefined;
 
     let resolved_deck: NemesisCard[] = [];
@@ -22,13 +22,13 @@
   
     onMount(() => {
         const shuffled_t1_cards = shuffle_array($common_t1_nemesis_cards);
-        t1_deck = shuffled_t1_cards.slice(0, TOTAL_T1_CARDS);
+        const t1_deck = shuffled_t1_cards.slice(0, TOTAL_T1_CARDS);
         const shuffled_t2_cards = shuffle_array($common_t2_nemesis_cards);
-        t2_deck = shuffled_t2_cards.slice(0, TOTAL_T2_CARDS);
+        const t2_deck = shuffled_t2_cards.slice(0, TOTAL_T2_CARDS);
         const shuffled_t3_cards = shuffle_array($common_t3_nemesis_cards);
-        t3_deck = shuffled_t3_cards.slice(0, TOTAL_T3_CARDS);
+        const t3_deck = shuffled_t3_cards.slice(0, TOTAL_T3_CARDS);
 
-        combined_deck = [...t1_deck, ...t2_deck, ...t3_deck];
+        combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
         next_turn()
     });
     
@@ -92,7 +92,9 @@
     <!-- Bottom half -->
     <div class="col-span-3 flex">
         {#each cards_on_field as card}
-            <NemesisCardComponent card_data={card} is_current_card={card === current_card} />
+            <div class="p-2">
+                <NemesisCardComponent card_data={card} is_current_card={card === current_card} />
+            </div>
         {/each}
     </div>
 
