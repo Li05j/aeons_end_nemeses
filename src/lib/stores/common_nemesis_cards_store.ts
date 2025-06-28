@@ -1,9 +1,9 @@
 import { readable, writable } from 'svelte/store';
-import { tier_1_cards, tier_2_cards, tier_3_cards } from '$lib/data/nemesis_data';
+import { basic_tier_1_cards, basic_tier_2_cards, basic_tier_3_cards } from '$lib/data/basic_nemesis_card_data';
 
-export const common_t1_nemesis_cards = readable(tier_1_cards);
-export const common_t2_nemesis_cards = readable(tier_2_cards);
-export const common_t3_nemesis_cards = readable(tier_3_cards);
+export const basic_common_t1_nemesis_cards = readable(basic_tier_1_cards);
+export const basic_common_t2_nemesis_cards = readable(basic_tier_2_cards);
+export const basic_common_t3_nemesis_cards = readable(basic_tier_3_cards);
 
 /////////////////////////////////////////
 //////////////// Signals ////////////////

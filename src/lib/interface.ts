@@ -4,6 +4,7 @@ interface BaseNemesisCard {
     tier: number;
     upgraded: boolean;
     is_sticky: boolean;
+    is_nemesis_card?: boolean;
 }
 
 interface AttackNemesisCard extends BaseNemesisCard {
@@ -18,7 +19,13 @@ interface PowerNemesisCard extends BaseNemesisCard {
 interface MinionNemesisCard extends BaseNemesisCard {
     type: 'minion';
     health: number;
+    shield?: number;
     is_sticky: false; // always false
 }
 
 export type NemesisCard = AttackNemesisCard | PowerNemesisCard | MinionNemesisCard;
+
+export interface RageborneStrikeCard {
+    title: string;
+    description: string;
+}

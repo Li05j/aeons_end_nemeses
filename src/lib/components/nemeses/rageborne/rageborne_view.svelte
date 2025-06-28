@@ -1,10 +1,30 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { common_t1_nemesis_cards, common_t2_nemesis_cards, common_t3_nemesis_cards } from '$lib/stores';
+    import { 
+        basic_common_t1_nemesis_cards, 
+        basic_common_t2_nemesis_cards, 
+        basic_common_t3_nemesis_cards,
+    } from '$lib/stores/common_nemesis_cards_store';
     import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemesis_card_component.svelte';
     import type { NemesisCard } from '$lib/interface';
+    
+    ///////////////////////////////////////////////////
 
+    import {
+        rageborne_t1_nemesis_cards,
+        rageborne_t2_nemesis_cards,
+        rageborne_t3_nemesis_cards,
+        rageborne_strike_deck,
+    } from '$lib/stores/specific_nemesis_cards_store';
+
+    const TOTAL_T1_NEMESIS_CARDS = 3;
+    const TOTAL_T2_NEMESIS_CARDS = 3;
+    const TOTAL_T3_NEMESIS_CARDS = 3;
+
+    let strike_deck = shuffle_array($rageborne_strike_deck);
+
+    ///////////////////////////////////////////////////
 
     // To prevent rapid clicking on Next Turn button
     let isOnCooldown = false;
@@ -19,25 +39,26 @@
         }, 750);
     }
 
-
-    const TOTAL_T1_CARDS = 3;
+    const TOTAL_T1_CARDS = 11;
     const TOTAL_T2_CARDS = 3;
     const TOTAL_T3_CARDS = 3;
 
-    let combined_deck: NemesisCard[] = [];
     let current_card: NemesisCard | undefined = undefined;
-
+    let combined_deck: NemesisCard[] = [];
+    let cards_on_field: NemesisCard[] = [];
     let resolved_deck: NemesisCard[] = [];
 
-    let cards_on_field: NemesisCard[] = [];
-  
     onMount(() => {
-        const shuffled_t1_cards = shuffle_array($common_t1_nemesis_cards);
-        const t1_deck = shuffled_t1_cards.slice(0, TOTAL_T1_CARDS);
-        const shuffled_t2_cards = shuffle_array($common_t2_nemesis_cards);
-        const t2_deck = shuffled_t2_cards.slice(0, TOTAL_T2_CARDS);
-        const shuffled_t3_cards = shuffle_array($common_t3_nemesis_cards);
-        const t3_deck = shuffled_t3_cards.slice(0, TOTAL_T3_CARDS);
+        const shuffled_common_t1_cards = shuffle_array($basic_common_t1_nemesis_cards);
+        const common_t1_deck = shuffled_common_t1_cards.slice(0, TOTAL_T1_CARDS - TOTAL_T1_NEMESIS_CARDS);
+        const shuffled_common_t2_cards = shuffle_array($basic_common_t2_nemesis_cards);
+        const common_t2_deck = shuffled_common_t2_cards.slice(0, TOTAL_T2_CARDS - TOTAL_T2_NEMESIS_CARDS);
+        const shuffled_common_t3_cards = shuffle_array($basic_common_t3_nemesis_cards);
+        const common_t3_deck = shuffled_common_t3_cards.slice(0, TOTAL_T3_CARDS - TOTAL_T3_NEMESIS_CARDS);
+
+        const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
+        const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
+        const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
 
         combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
         next_turn()
@@ -49,6 +70,9 @@
             if (current_card) { resolved_deck.push(current_card); }
             current_card = combined_deck.shift();
             combined_deck = [...combined_deck] // To trigger reactivity
+        }
+        else {
+            current_card = undefined;
         }
 
         for (let i = 0; i < cards_on_field.length; i++) {
