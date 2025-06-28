@@ -1,4 +1,4 @@
-import type { NemesisCard, RageborneStrikeCard } from '$lib/interface';
+import type { NemesisCard, RageborneStrikeCard } from '$lib/types';
 
 export const rageborne_tier_1_cards: NemesisCard[] = [
     {

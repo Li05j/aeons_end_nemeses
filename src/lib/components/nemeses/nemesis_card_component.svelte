@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { NemesisCard } from '$lib/interface';
+    import type { NemesisCard } from '$lib/types';
 
     export let card_data: NemesisCard | undefined;
     export let is_current_card = false;
@@ -63,33 +63,41 @@
             <div class="space-y-2">
                 {#if card_data.type === 'attack'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                    <p class="text-right">Tier: {card_data.tier}</p>
+                    {#if card_data.upgraded === false}
+                        <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
+                    {:else}
+                        <p class="text-right">Upgraded Tier: {card_data.tier}</p>
+                    {/if}
                 {:else if card_data.type === 'power'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                        <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2">
                         <span class="">Power:</span>
                         <input type="number" bind:value={card_data.power} class="w-16 text-center border rounded px-1" min="-1">
                         </div>
                         {#if card_data.upgraded === false}
-                            <p class="text-right">Tier: {card_data.tier}</p>
+                            <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
                         {:else}
                             <p class="text-right">Upgraded Tier: {card_data.tier}</p>
                         {/if}
                     </div>
                 {:else if card_data.type === 'minion'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
+                    {#if card_data.shield}
+                        <span class="">Shield:</span>
+                        <input type="number" bind:value={card_data.shield} class="w-16 text-center border rounded px-1" min="0">
+                    {/if}
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-2">
                             <span class="">Health:</span>
                             <input type="number" bind:value={card_data.health} class="w-16 text-center border rounded px-1" min="0">
                         </div>
-                        <p class="text-right">Tier: {card_data.tier}</p>
+                        {#if card_data.upgraded === false}
+                            <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
+                        {:else}
+                            <p class="text-right">Upgraded Tier: {card_data.tier}</p>
+                        {/if}
                     </div>
-                    {#if card_data.shield}
-                        <span class="">Shield:</span>
-                        <input type="number" bind:value={card_data.shield} class="w-16 text-center border rounded px-1" min="0">
-                    {/if}
                 {/if}
             </div>
         </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
     import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
-    import type { Nemesis } from '$lib/data/basic_nemesis_card_data';
+    import type { Nemesis } from '$lib/types';
   
     var current_view: Nemesis = 'none';
 

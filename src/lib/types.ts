@@ -1,3 +1,10 @@
+export type Nemesis = 'none' | 'rageborne' | 'carapace_queen'
+
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+export type NemesisCard = AttackNemesisCard | PowerNemesisCard | MinionNemesisCard;
+
 interface BaseNemesisCard {
     title: string;
     description: string;
@@ -23,7 +30,8 @@ interface MinionNemesisCard extends BaseNemesisCard {
     is_sticky: false; // always false
 }
 
-export type NemesisCard = AttackNemesisCard | PowerNemesisCard | MinionNemesisCard;
+///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 
 export interface RageborneStrikeCard {
     title: string;

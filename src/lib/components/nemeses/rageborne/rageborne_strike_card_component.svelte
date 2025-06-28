@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { NemesisCard, RageborneStrikeCard } from '$lib/interface';
+    import type { NemesisCard, RageborneStrikeCard } from '$lib/types';
 
     export let card_data: RageborneStrikeCard | undefined;
 

@@ -4,11 +4,14 @@
         basic_common_t1_nemesis_cards, 
         basic_common_t2_nemesis_cards, 
         basic_common_t3_nemesis_cards,
+        upgraded_common_t1_nemesis_cards,
+        upgraded_common_t2_nemesis_cards,
+        upgraded_common_t3_nemesis_cards,
     } from '$lib/stores/common_nemesis_cards_store';
 
     import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
-    import type { NemesisCard } from '$lib/interface';
+    import type { NemesisCard } from '$lib/types';
     
     ///////////////////////////////////////////////////
 
@@ -54,28 +57,105 @@
         }, 750);
     }
 
-    const TOTAL_T1_CARDS = 11;
-    const TOTAL_T2_CARDS = 3;
-    const TOTAL_T3_CARDS = 3;
+    const TOTAL_COMMON_T1_CARDS = 8;
+    const TOTAL_COMMON_T2_CARDS = 7;
+    const TOTAL_COMMON_T3_CARDS = 7;
 
     let current_card: NemesisCard | undefined = undefined;
     let combined_deck: NemesisCard[] = [];
     let cards_on_field: NemesisCard[] = [];
     let resolved_deck: NemesisCard[] = [];
 
+    function buildTierDeck(upgradedCards: NemesisCard[], basicCards: NemesisCard[], totalNeeded: number) {
+        const shuffledUpgraded = shuffle_array(upgradedCards);
+        const upgradedToUse = shuffledUpgraded.slice(0, totalNeeded);
+        
+        if (upgradedToUse.length >= totalNeeded) {
+            return upgradedToUse;
+        }
+
+        const basicNeeded = totalNeeded - upgradedToUse.length;
+        const shuffledBasic = shuffle_array(basicCards);
+        const basicToUse = shuffledBasic.slice(0, basicNeeded);
+
+        return [...upgradedToUse, ...basicToUse];
+    }
+
     onMount(() => {
-        const shuffled_common_t1_cards = shuffle_array($basic_common_t1_nemesis_cards);
-        const common_t1_deck = shuffled_common_t1_cards.slice(0, TOTAL_T1_CARDS - TOTAL_T1_NEMESIS_CARDS);
-        const shuffled_common_t2_cards = shuffle_array($basic_common_t2_nemesis_cards);
-        const common_t2_deck = shuffled_common_t2_cards.slice(0, TOTAL_T2_CARDS - TOTAL_T2_NEMESIS_CARDS);
-        const shuffled_common_t3_cards = shuffle_array($basic_common_t3_nemesis_cards);
-        const common_t3_deck = shuffled_common_t3_cards.slice(0, TOTAL_T3_CARDS - TOTAL_T3_NEMESIS_CARDS);
+        const common_t1_deck = buildTierDeck($upgraded_common_t1_nemesis_cards, $basic_common_t1_nemesis_cards, TOTAL_COMMON_T1_CARDS);
+        const common_t2_deck = buildTierDeck($upgraded_common_t2_nemesis_cards, $basic_common_t2_nemesis_cards, TOTAL_COMMON_T2_CARDS);
+        const common_t3_deck = buildTierDeck($upgraded_common_t3_nemesis_cards, $basic_common_t3_nemesis_cards, TOTAL_COMMON_T3_CARDS);
 
         const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
         const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
         const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
 
         combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
+        // const shullfed_upgraded_t1_cards = shuffle_array($upgraded_common_t1_nemesis_cards);
+        // const shullfed_upgraded_t2_cards = shuffle_array($upgraded_common_t2_nemesis_cards);
+        // const shullfed_upgraded_t3_cards = shuffle_array($upgraded_common_t3_nemesis_cards);
+
+        // let common_upgraded_t1_deck = [];
+        // let common_upgraded_t2_deck = [];
+        // let common_upgraded_t3_deck = [];
+
+        // if (shullfed_upgraded_t1_cards.length < TOTAL_COMMON_T1_CARDS) {
+        //     common_upgraded_t1_deck = shullfed_upgraded_t1_cards;
+        // }
+        // else {
+        //     common_upgraded_t1_deck = shullfed_upgraded_t1_cards.slice(0, TOTAL_COMMON_T1_CARDS);
+        // }
+
+        // if (shullfed_upgraded_t2_cards.length < TOTAL_COMMON_T2_CARDS) {
+        //     common_upgraded_t2_deck = shullfed_upgraded_t2_cards;
+        // }
+        // else {
+        //     common_upgraded_t2_deck = shullfed_upgraded_t2_cards.slice(0, TOTAL_COMMON_T2_CARDS);
+        // }
+
+        // if (shullfed_upgraded_t3_cards.length < TOTAL_COMMON_T3_CARDS) {
+        //     common_upgraded_t3_deck = shullfed_upgraded_t3_cards;
+        // }
+        // else {
+        //     common_upgraded_t3_deck = shullfed_upgraded_t3_cards.slice(0, TOTAL_COMMON_T3_CARDS);
+        // }
+
+        // let common_t1_deck = [];
+        // let common_t2_deck = [];
+        // let common_t3_deck = [];
+
+        // if (common_upgraded_t1_deck.length < TOTAL_COMMON_T1_CARDS) {
+        //     const shuffled_common_basic_t1_cards = shuffle_array($basic_common_t1_nemesis_cards);
+        //     const common_basic_t1_deck = shuffled_common_basic_t1_cards.slice(0, TOTAL_COMMON_T1_CARDS - common_upgraded_t1_deck.length);
+        //     common_t1_deck = [...common_basic_t1_deck, ...common_upgraded_t1_deck];
+        // }
+        // else {
+        //     common_t1_deck = common_upgraded_t1_deck;
+        // }
+
+        // if (common_upgraded_t2_deck.length < TOTAL_COMMON_T2_CARDS) {
+        //     const shuffled_common_basic_t2_cards = shuffle_array($basic_common_t2_nemesis_cards);
+        //     const common_basic_t2_deck = shuffled_common_basic_t2_cards.slice(0, TOTAL_COMMON_T2_CARDS - common_upgraded_t2_deck.length);
+        //     common_t2_deck = [...common_basic_t2_deck, ...common_upgraded_t2_deck];
+        // }
+        // else {
+        //     common_t2_deck = common_upgraded_t2_deck;
+        // }
+
+        // if (common_upgraded_t3_deck.length < TOTAL_COMMON_T3_CARDS) {
+        //     const shuffled_common_basic_t3_cards = shuffle_array($basic_common_t3_nemesis_cards);
+        //     const common_basic_t3_deck = shuffled_common_basic_t3_cards.slice(0, TOTAL_COMMON_T3_CARDS - common_upgraded_t3_deck.length);
+        //     common_t3_deck = [...common_basic_t3_deck, ...common_upgraded_t3_deck];
+        // }
+        // else {
+        //     common_t3_deck = common_upgraded_t3_deck;
+        // }
+
+        // const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
+        // const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
+        // const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
+
+        // combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
         next_turn()
     });
     
