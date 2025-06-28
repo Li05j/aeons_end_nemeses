@@ -38,7 +38,7 @@
     }
 
     function set_title_text_color(card_data: NemesisCard | undefined) {
-        if (card_data?.is_nemesis_card) {
+        if (card_data?.is_nemesis_specific_card) {
             return 'text-pink-500';
         }
         return 'text-black';

@@ -5,8 +5,9 @@
         basic_common_t2_nemesis_cards, 
         basic_common_t3_nemesis_cards,
     } from '$lib/stores/common_nemesis_cards_store';
+
     import { shuffle_array } from '$lib/utils';
-    import NemesisCardComponent from '$lib/components/nemesis_card_component.svelte';
+    import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
     import type { NemesisCard } from '$lib/interface';
     
     ///////////////////////////////////////////////////
@@ -18,11 +19,25 @@
         rageborne_strike_deck,
     } from '$lib/stores/specific_nemesis_cards_store';
 
+    import RageborneStrikeCardComponent from '$lib/components/nemeses/rageborne/rageborne_strike_card_component.svelte';
+
     const TOTAL_T1_NEMESIS_CARDS = 3;
     const TOTAL_T2_NEMESIS_CARDS = 3;
     const TOTAL_T3_NEMESIS_CARDS = 3;
 
     let strike_deck = shuffle_array($rageborne_strike_deck);
+    let striking: boolean = false;
+
+    function strike() {
+        reset_strike()
+        nextTurnClickCooldown();
+        striking = true;
+    }
+
+    function reset_strike() {
+        striking = false;
+        strike_deck = shuffle_array(strike_deck);
+    }
 
     ///////////////////////////////////////////////////
 
@@ -65,6 +80,10 @@
     });
     
     function next_turn() {
+        /////////////////////////
+        reset_strike();
+        /////////////////////////
+
         nextTurnClickCooldown();
         if (combined_deck.length > 0) {
             if (current_card) { resolved_deck.push(current_card); }
@@ -121,8 +140,14 @@
     </div>
     
     <!-- Right -->
-    <div class="col-span-2 flex items-center justify-center">
-        Idk what to put here yet
+    <div class="col-span-2 flex items-center">
+        {#if striking === true}
+            <RageborneStrikeCardComponent card_data={strike_deck[0]}/>
+        {:else}
+            <div class="bg-pink-200 p-4 space-y-4 card-hover overflow-hidden w-84 h-96 text-center flex items-center justify-center">
+                <p class="text-center text-black">Not Striking Yet owo</p>
+            </div>
+        {/if}
     </div>
     
     <!-- Bottom half -->
@@ -134,11 +159,20 @@
         {/each}
     </div>
 
-    <button 
-        class="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-        on:click={() => next_turn()}
-        disabled={isOnCooldown}
-    >
-        Next Turn ({combined_deck.length} cards left)
-    </button>
+    <div class="absolute bottom-4 right-4 space-x-2">
+        <button 
+            class="bg-red-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            on:click={() => strike()}
+            disabled={isOnCooldown}
+        >
+            Nemesis Strikes
+        </button>
+        <button
+            class="bg-blue-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            on:click={() => next_turn()}
+            disabled={isOnCooldown}
+        >
+            Next Turn ({combined_deck.length} cards left)
+        </button>
+    </div>
 </div>

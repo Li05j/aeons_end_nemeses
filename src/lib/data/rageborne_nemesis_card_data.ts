@@ -8,7 +8,7 @@ export const rageborne_tier_1_cards: NemesisCard[] = [
         tier: 1,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
     {
         type: 'attack',
@@ -17,7 +17,7 @@ export const rageborne_tier_1_cards: NemesisCard[] = [
         tier: 1,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
     {
         type: 'minion',
@@ -27,7 +27,7 @@ export const rageborne_tier_1_cards: NemesisCard[] = [
         upgraded: false,
         health: 5,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
 ]
 
@@ -40,7 +40,7 @@ export const rageborne_tier_2_cards: NemesisCard[] = [
         power: 2,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
     {
         type: 'power',
@@ -50,7 +50,7 @@ export const rageborne_tier_2_cards: NemesisCard[] = [
         power: 2,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
     {
         type: 'minion',
@@ -60,7 +60,7 @@ export const rageborne_tier_2_cards: NemesisCard[] = [
         upgraded: false,
         health: 9,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
 ]
 
@@ -73,7 +73,7 @@ export const rageborne_tier_3_cards: NemesisCard[] = [
         upgraded: false,
         health: 16,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     }, 
     {
         type: 'attack',
@@ -82,7 +82,7 @@ export const rageborne_tier_3_cards: NemesisCard[] = [
         tier: 3,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
     {
         type: 'power',
@@ -92,7 +92,7 @@ export const rageborne_tier_3_cards: NemesisCard[] = [
         power: 2,
         upgraded: false,
         is_sticky: false,
-        is_nemesis_card: true
+        is_nemesis_specific_card: true
     },
 ]
 

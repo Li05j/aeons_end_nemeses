@@ -4,7 +4,7 @@ interface BaseNemesisCard {
     tier: number;
     upgraded: boolean;
     is_sticky: boolean;
-    is_nemesis_card?: boolean;
+    is_nemesis_specific_card?: boolean;
 }
 
 interface AttackNemesisCard extends BaseNemesisCard {
