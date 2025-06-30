@@ -11,6 +11,7 @@
 
     import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
+    import CarapaceQueenHuskTrackComponent from '$lib/components/nemeses/carapace_queen/carapace_queen_husk_track_component.svelte';
     import type { NemesisCard } from '$lib/types';
     
     ///////////////////////////////////////////////////
@@ -19,23 +20,20 @@
         rageborne_t1_nemesis_cards,
         rageborne_t2_nemesis_cards,
         rageborne_t3_nemesis_cards,
-        rageborne_strike_deck,
     } from '$lib/stores/specific_nemesis_cards_store';
 
-    import RageborneStrikeCardComponent from '$lib/components/nemeses/rageborne/rageborne_strike_card_component.svelte';
+    let husks_count: number = 2;
 
-    let strike_deck = shuffle_array($rageborne_strike_deck);
-    let striking: boolean = false;
-
-    function strike() {
-        reset_strike()
-        nextTurnClickCooldown();
-        striking = true;
+    function add_husks() {
+        nextTurnClickCooldown(250)
+        husks_count++;
     }
 
-    function reset_strike() {
-        striking = false;
-        strike_deck = shuffle_array(strike_deck);
+    function remove_husks() {
+        nextTurnClickCooldown(250)
+        if (husks_count > 0) {
+            husks_count--;
+        }
     }
 
     ///////////////////////////////////////////////////
@@ -43,14 +41,14 @@
     // To prevent rapid clicking on Next Turn button
     let isOnCooldown = false;
     
-    function nextTurnClickCooldown() {
+    function nextTurnClickCooldown(cooldown: number = 750) {
         if (isOnCooldown) return;
         
         // Start cooldown
         isOnCooldown = true;
         setTimeout(() => {
             isOnCooldown = false;
-        }, 750);
+        }, cooldown);
     }
 
     const TOTAL_COMMON_T1_CARDS = 8;
@@ -91,10 +89,6 @@
     });
     
     function next_turn() {
-        /////////////////////////
-        reset_strike();
-        /////////////////////////
-
         nextTurnClickCooldown();
         if (combined_deck.length > 0) {
             if (current_card) { resolved_deck.push(current_card); }
@@ -151,14 +145,8 @@
     </div>
     
     <!-- Top Right -->
-    <div class="col-span-2 flex items-center">
-        {#if striking === true}
-            <RageborneStrikeCardComponent card_data={strike_deck[0]}/>
-        {:else}
-            <div class="bg-pink-200 p-4 space-y-4 card-hover overflow-hidden w-84 h-96 text-center flex items-center justify-center">
-                <p class="text-center text-black">Not Striking Yet owo</p>
-            </div>
-        {/if}
+    <div class="col-span-2 h-full flex items-center justify-center text-center">
+        <CarapaceQueenHuskTrackComponent husks_count={husks_count} />
     </div>
     
     <!-- Bottom half -->
@@ -173,10 +161,17 @@
     <div class="absolute bottom-4 right-4 space-x-2">
         <button 
             class="bg-red-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-            on:click={() => strike()}
+            on:click={() => add_husks()}
             disabled={isOnCooldown}
         >
-            Nemesis Strikes
+            Add Husks
+        </button>
+        <button 
+            class="bg-green-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            on:click={() => remove_husks()}
+            disabled={isOnCooldown}
+        >
+            Remove Husks
         </button>
         <button
             class="bg-blue-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"

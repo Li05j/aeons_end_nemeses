@@ -1,6 +1,7 @@
 <script lang="ts">
     import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
     import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
+    import CarapaceQueenView from '$lib/components/nemeses/carapace_queen/carapace_queen_view.svelte';
     import type { Nemesis } from '$lib/types';
   
     var current_view: Nemesis = 'none';
@@ -37,6 +38,10 @@
         {:else if current_view === 'rageborne'}
             <div class="flex-1 h-full p-4">
                 <RageborneView />
+            </div>
+        {:else if current_view === 'carapace_queen'}
+            <div class="flex-1 h-full p-4">
+                <CarapaceQueenView />
             </div>
         {/if}
     </main>

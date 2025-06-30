@@ -17,7 +17,7 @@
         const type = card_data.type;
         switch (type) {
             case 'attack':
-                return 'bg-purple-200';
+                return 'bg-purple-300';
             case 'power':
                 return 'bg-yellow-100';
             case 'minion':
