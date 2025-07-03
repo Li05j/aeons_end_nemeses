@@ -17,9 +17,9 @@
     ///////////////////////////////////////////////////
 
     import {
-        rageborne_t1_nemesis_cards,
-        rageborne_t2_nemesis_cards,
-        rageborne_t3_nemesis_cards,
+        carapace_queen_t1_nemesis_cards,
+        carapace_queen_t2_nemesis_cards,
+        carapace_queen_t3_nemesis_cards,
     } from '$lib/stores/specific_nemesis_cards_store';
 
     let husks_count: number = 2;
@@ -80,9 +80,9 @@
         const common_t2_deck = buildTierDeck($upgraded_common_t2_nemesis_cards, $basic_common_t2_nemesis_cards, TOTAL_COMMON_T2_CARDS);
         const common_t3_deck = buildTierDeck($upgraded_common_t3_nemesis_cards, $basic_common_t3_nemesis_cards, TOTAL_COMMON_T3_CARDS);
 
-        const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
-        const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
-        const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
+        const t1_deck = shuffle_array([...$carapace_queen_t1_nemesis_cards, ...common_t1_deck]);
+        const t2_deck = shuffle_array([...$carapace_queen_t2_nemesis_cards, ...common_t2_deck]);
+        const t3_deck = shuffle_array([...$carapace_queen_t3_nemesis_cards, ...common_t3_deck]);
 
         combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
         next_turn()
