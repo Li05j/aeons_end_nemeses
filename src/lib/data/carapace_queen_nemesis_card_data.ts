@@ -56,7 +56,7 @@ export const carapace_queen_tier_2_cards: NemesisCard[] = [
         type: 'attack',
         title: 'Infest',
         description: 'Carapace Queen Swarms twice.\nOR\nAny player suffers 4 damage.',
-        tier: 1,
+        tier: 2,
         upgraded: false,
         is_sticky: false,
         is_nemesis_specific_card: true
