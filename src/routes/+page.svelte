@@ -3,6 +3,7 @@
     import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
     import CarapaceQueenView from '$lib/components/nemeses/carapace_queen/carapace_queen_view.svelte';
     import type { Nemesis } from '$lib/types';
+    import WaywardOneView from '$lib/components/nemeses/wayward_one/wayward_one_view.svelte';
   
     var current_view: Nemesis = 'none';
 
@@ -13,6 +14,9 @@
                 break;
             case 'Carapace Queen':
                 current_view = 'carapace_queen';
+                break;
+            case 'Wayward One':
+                current_view = 'wayward_one';
                 break;
             case 'Soon':
                 current_view = 'none';
@@ -42,6 +46,10 @@
         {:else if current_view === 'carapace_queen'}
             <div class="flex-1 h-full p-4">
                 <CarapaceQueenView />
+            </div>
+        {:else if current_view === 'wayward_one'}
+            <div class="flex-1 h-full p-4">
+                <WaywardOneView />
             </div>
         {/if}
     </main>

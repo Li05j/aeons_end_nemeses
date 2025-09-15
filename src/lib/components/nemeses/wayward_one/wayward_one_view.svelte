@@ -9,39 +9,33 @@
         upgraded_common_t3_nemesis_cards,
     } from '$lib/stores/common_nemesis_cards_store';
 
-    import { shuffle_array } from '$lib/utils'; 
+    import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
     import type { NemesisCard } from '$lib/types';
     
     ///////////////////////////////////////////////////
 
     import {
-        rageborne_t1_nemesis_cards,
-        rageborne_t2_nemesis_cards,
-        rageborne_t3_nemesis_cards,
-        rageborne_strike_deck,
+        wayward_one_t1_nemesis_cards,
+        wayward_one_t2_nemesis_cards,
+        wayward_one_t3_nemesis_cards,
     } from '$lib/stores/specific_nemesis_cards_store';
+    import WaywardOneBreachAlign from './wayward_one_breach_align.svelte';
 
-    import RageborneStrikeCardComponent from '$lib/components/nemeses/rageborne/rageborne_strike_card_component.svelte';
+    let breach_align: 1 | 2 | 3 | 4 = $state(1);
 
-    let strike_deck = shuffle_array($rageborne_strike_deck);
-    let striking: boolean = false;
-
-    function strike() {
-        reset_strike()
-        nextTurnClickCooldown();
-        striking = true;
-    }
-
-    function reset_strike() {
-        striking = false;
-        strike_deck = shuffle_array(strike_deck);
+    function next_align_breach() {
+        if (breach_align === 4) {
+            breach_align = 1;
+        } else {
+            breach_align++;
+        }
     }
 
     ///////////////////////////////////////////////////
 
     // To prevent rapid clicking on Next Turn button
-    let isOnCooldown = false;
+    let isOnCooldown = $state(false);
     
     function nextTurnClickCooldown(cooldown: number = 750) {
         if (isOnCooldown) return;
@@ -57,10 +51,10 @@
     const TOTAL_COMMON_T2_CARDS = 7;
     const TOTAL_COMMON_T3_CARDS = 7;
 
-    let current_card: NemesisCard | undefined = undefined;
-    let combined_deck: NemesisCard[] = [];
-    let cards_on_field: NemesisCard[] = [];
-    let resolved_deck: NemesisCard[] = [];
+    let current_card: NemesisCard | undefined = $state(undefined);
+    let combined_deck: NemesisCard[] = $state([]);
+    let cards_on_field: NemesisCard[] = $state([]);
+    let resolved_deck: NemesisCard[] = $state([]);
 
     function buildTierDeck(upgradedCards: NemesisCard[], basicCards: NemesisCard[], totalNeeded: number) {
         const shuffledUpgraded = shuffle_array(upgradedCards);
@@ -82,19 +76,15 @@
         const common_t2_deck = buildTierDeck($upgraded_common_t2_nemesis_cards, $basic_common_t2_nemesis_cards, TOTAL_COMMON_T2_CARDS);
         const common_t3_deck = buildTierDeck($upgraded_common_t3_nemesis_cards, $basic_common_t3_nemesis_cards, TOTAL_COMMON_T3_CARDS);
 
-        const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
-        const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
-        const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
+        const t1_deck = shuffle_array([...$wayward_one_t1_nemesis_cards, ...common_t1_deck]);
+        const t2_deck = shuffle_array([...$wayward_one_t2_nemesis_cards, ...common_t2_deck]);
+        const t3_deck = shuffle_array([...$wayward_one_t3_nemesis_cards, ...common_t3_deck]);
 
         combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
         next_turn()
     });
     
     function next_turn() {
-        /////////////////////////
-        reset_strike();
-        /////////////////////////
-
         nextTurnClickCooldown();
         if (combined_deck.length > 0) {
             if (current_card) { resolved_deck.push(current_card); }
@@ -151,14 +141,8 @@
     </div>
     
     <!-- Top Right -->
-    <div class="col-span-2 flex items-center">
-        {#if striking === true}
-            <RageborneStrikeCardComponent card_data={strike_deck[0]}/>
-        {:else}
-            <div class="bg-pink-200 p-4 space-y-4 card-hover overflow-hidden w-84 h-96 text-center flex items-center justify-center">
-                <p class="text-center text-black">Not Striking Yet owo</p>
-            </div>
-        {/if}
+    <div class="col-span-2 h-full flex items-center justify-center text-center">
+        <WaywardOneBreachAlign {breach_align} />
     </div>
     
     <!-- Bottom half -->
@@ -173,14 +157,14 @@
     <div class="absolute bottom-4 right-4 space-x-2">
         <button 
             class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-            on:click={() => strike()}
+            onclick={() => next_align_breach()}
             disabled={isOnCooldown}
         >
-            Nemesis Strikes
+            Shift Position 
         </button>
         <button
             class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-            on:click={() => next_turn()}
+            onclick={() => next_turn()}
             disabled={isOnCooldown}
         >
             Next Turn ({combined_deck.length} cards left)

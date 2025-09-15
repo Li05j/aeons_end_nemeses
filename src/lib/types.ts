@@ -1,4 +1,4 @@
-export type Nemesis = 'none' | 'rageborne' | 'carapace_queen'
+export type Nemesis = 'none' | 'rageborne' | 'carapace_queen' | 'wayward_one'
 
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////

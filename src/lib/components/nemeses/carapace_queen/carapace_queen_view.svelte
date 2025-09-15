@@ -11,8 +11,9 @@
 
     import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
-    import CarapaceQueenHuskTrackComponent from '$lib/components/nemeses/carapace_queen/carapace_queen_husk_track_component.svelte';
     import type { NemesisCard } from '$lib/types';
+
+    import CarapaceQueenHuskTrackComponent from '$lib/components/nemeses/carapace_queen/carapace_queen_husk_track_component.svelte';
     
     ///////////////////////////////////////////////////
 
@@ -160,21 +161,21 @@
 
     <div class="absolute bottom-4 right-4 space-x-2">
         <button 
-            class="bg-red-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
             on:click={() => add_husks()}
             disabled={isOnCooldown}
         >
             Add Husks
         </button>
         <button 
-            class="bg-green-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
             on:click={() => remove_husks()}
             disabled={isOnCooldown}
         >
             Remove Husks
         </button>
         <button
-            class="bg-blue-500 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
+            class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
             on:click={() => next_turn()}
             disabled={isOnCooldown}
         >

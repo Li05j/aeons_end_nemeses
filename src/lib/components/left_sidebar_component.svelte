@@ -1,7 +1,7 @@
 <script lang="ts">
     export let change_view: (which: string) => void;
 
-    const sidebar_items: string[] = ['Rageborne', 'Carapace Queen', 'Soon', 'Soon', 'Soon'];
+    const sidebar_items: string[] = ['Rageborne', 'Carapace Queen', 'Wayward One', 'Soon', 'Soon'];
     let isOpen = true;
     let showContent = true;
 

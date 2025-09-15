@@ -29,10 +29,10 @@
 
     function set_border_color(card_data: NemesisCard | undefined, is_current_card: boolean) {
         if (is_current_card) {
-            return 'border-4 border-blue-500';
+            return 'outline outline-4 outline-blue-500';
         }
         if (card_data && ((card_data.type === 'power' && card_data.power <= 0) || (card_data.type === 'minion' && card_data.health <= 0))) {
-            return 'border-4 border-red-500';
+            return 'outline outline-4 outline-red-500';
         }
         return '';
     }
@@ -46,7 +46,7 @@
 
 </script>
 
-<div class="{card_bg_color} {border_color} p-4 space-y-4 card-hover overflow-hidden w-84 h-96">
+<div class="{card_bg_color} {border_color} p-4 space-y-4 card-hover overflow-hidden w-84 h-96 relative">
     {#if card_data === undefined}
         <p class="text-center text-gray-500">No more cards</p>
         <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
@@ -63,11 +63,6 @@
             <div class="space-y-2">
                 {#if card_data.type === 'attack'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
-                    {#if card_data.upgraded === false}
-                        <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
-                    {:else}
-                        <p class="text-right">Upgraded Tier: {card_data.tier}</p>
-                    {/if}
                 {:else if card_data.type === 'power'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
                     <div class="flex justify-between items-center">
@@ -75,11 +70,6 @@
                         <span class="">Power:</span>
                         <input type="number" bind:value={card_data.power} class="w-16 text-center border rounded px-1" min="-1">
                         </div>
-                        {#if card_data.upgraded === false}
-                            <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
-                        {:else}
-                            <p class="text-right">Upgraded Tier: {card_data.tier}</p>
-                        {/if}
                     </div>
                 {:else if card_data.type === 'minion'}
                     <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
@@ -92,13 +82,15 @@
                             <span class="">Health:</span>
                             <input type="number" bind:value={card_data.health} class="w-16 text-center border rounded px-1" min="0">
                         </div>
-                        {#if card_data.upgraded === false}
-                            <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
-                        {:else}
-                            <p class="text-right">Upgraded Tier: {card_data.tier}</p>
-                        {/if}
                     </div>
                 {/if}
+                <div class="absolute bottom-4 right-4">
+                    {#if card_data.upgraded === false}
+                        <p class="{title_text_color} text-right">Tier: {card_data.tier}</p>
+                    {:else}
+                        <p class="text-right">Upgraded Tier: {card_data.tier}</p>
+                    {/if}
+                </div>
             </div>
         </div>
     {/if}
