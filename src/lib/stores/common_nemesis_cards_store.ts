@@ -9,15 +9,3 @@ export const basic_common_t3_nemesis_cards = readable(basic_tier_3_cards);
 export const upgraded_common_t1_nemesis_cards = readable(upgraded_tier_1_cards);
 export const upgraded_common_t2_nemesis_cards = readable(upgraded_tier_2_cards);
 export const upgraded_common_t3_nemesis_cards = readable(upgraded_tier_3_cards);
-
-/////////////////////////////////////////
-//////////////// Signals ////////////////
-/////////////////////////////////////////
-
-// Emitted when a pair is about to be added to teams
-// export const add_pairs_to_team_signal = writable<[OsuUserInfo, OsuUserInfo] | null>();
-// // Emitted when a player is about to be added to teams
-// export const addPlayerToTeamSignal = writable<OsuUserInfo | null>();
-
-// // Emitted when undo is triggered
-// export const undoSignal = writable<[OsuUserInfo, OsuUserInfo] | null>();

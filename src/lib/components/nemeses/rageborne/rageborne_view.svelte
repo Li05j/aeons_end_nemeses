@@ -1,14 +1,5 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { 
-        basic_common_t1_nemesis_cards, 
-        basic_common_t2_nemesis_cards, 
-        basic_common_t3_nemesis_cards,
-        upgraded_common_t1_nemesis_cards,
-        upgraded_common_t2_nemesis_cards,
-        upgraded_common_t3_nemesis_cards,
-    } from '$lib/stores/common_nemesis_cards_store';
-
     import { shuffle_array } from '$lib/utils'; 
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
     import type { NemesisCard } from '$lib/types';
@@ -23,6 +14,7 @@
     } from '$lib/stores/specific_nemesis_cards_store';
 
     import RageborneStrikeCardComponent from '$lib/components/nemeses/rageborne/rageborne_strike_card_component.svelte';
+    import { GameDeckM } from '$lib/stores/game_deck_manager_store.svelte';
 
     let strike_deck = shuffle_array($rageborne_strike_deck);
     let striking: boolean = false;
@@ -53,40 +45,15 @@
         }, cooldown);
     }
 
-    const TOTAL_COMMON_T1_CARDS = 8;
-    const TOTAL_COMMON_T2_CARDS = 7;
-    const TOTAL_COMMON_T3_CARDS = 7;
-
     let current_card: NemesisCard | undefined = undefined;
-    let combined_deck: NemesisCard[] = [];
     let cards_on_field: NemesisCard[] = [];
-    let resolved_deck: NemesisCard[] = [];
-
-    function buildTierDeck(upgradedCards: NemesisCard[], basicCards: NemesisCard[], totalNeeded: number) {
-        const shuffledUpgraded = shuffle_array(upgradedCards);
-        const upgradedToUse = shuffledUpgraded.slice(0, totalNeeded);
-        
-        if (upgradedToUse.length >= totalNeeded) {
-            return upgradedToUse;
-        }
-
-        const basicNeeded = totalNeeded - upgradedToUse.length;
-        const shuffledBasic = shuffle_array(basicCards);
-        const basicToUse = shuffledBasic.slice(0, basicNeeded);
-
-        return [...upgradedToUse, ...basicToUse];
-    }
 
     onMount(() => {
-        const common_t1_deck = buildTierDeck($upgraded_common_t1_nemesis_cards, $basic_common_t1_nemesis_cards, TOTAL_COMMON_T1_CARDS);
-        const common_t2_deck = buildTierDeck($upgraded_common_t2_nemesis_cards, $basic_common_t2_nemesis_cards, TOTAL_COMMON_T2_CARDS);
-        const common_t3_deck = buildTierDeck($upgraded_common_t3_nemesis_cards, $basic_common_t3_nemesis_cards, TOTAL_COMMON_T3_CARDS);
-
-        const t1_deck = shuffle_array([...$rageborne_t1_nemesis_cards, ...common_t1_deck]);
-        const t2_deck = shuffle_array([...$rageborne_t2_nemesis_cards, ...common_t2_deck]);
-        const t3_deck = shuffle_array([...$rageborne_t3_nemesis_cards, ...common_t3_deck]);
-
-        combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
+        GameDeckM.buildDeck(
+            $rageborne_t1_nemesis_cards,
+            $rageborne_t2_nemesis_cards,
+            $rageborne_t3_nemesis_cards,
+        )
         next_turn()
     });
     
@@ -96,10 +63,10 @@
         /////////////////////////
 
         nextTurnClickCooldown();
-        if (combined_deck.length > 0) {
-            if (current_card) { resolved_deck.push(current_card); }
-            current_card = combined_deck.shift();
-            combined_deck = [...combined_deck] // To trigger reactivity
+        if (GameDeckM.getCardsLeft() > 0) {
+            if (current_card) { GameDeckM.resolveCard(current_card) }
+            current_card = GameDeckM.shift();
+            // combined_deck = [...combined_deck] // To trigger reactivity
         }
         else {
             current_card = undefined;
@@ -183,7 +150,7 @@
             on:click={() => next_turn()}
             disabled={isOnCooldown}
         >
-            Next Turn ({combined_deck.length} cards left)
+            Next Turn ({GameDeckM.getCardsLeft()} cards left)
         </button>
     </div>
 </div>

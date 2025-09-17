@@ -2,10 +2,12 @@
     import type { Nemesis } from '$lib/types';
     import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
     import ChooseModeComponent from '$lib/components/choose_mode_component.svelte';
+    import { GameDeckM } from '$lib/stores/game_deck_manager_store.svelte';
   
     var current_view: Nemesis = 'none';
 
     function change_view(item: string) {
+        GameDeckM.reset()
         switch (item) {
             case 'Rageborne':
                 current_view = 'rageborne';
