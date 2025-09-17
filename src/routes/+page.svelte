@@ -1,9 +1,7 @@
 <script lang="ts">
-    import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
-    import RageborneView from '$lib/components/nemeses/rageborne/rageborne_view.svelte';
-    import CarapaceQueenView from '$lib/components/nemeses/carapace_queen/carapace_queen_view.svelte';
     import type { Nemesis } from '$lib/types';
-    import WaywardOneView from '$lib/components/nemeses/wayward_one/wayward_one_view.svelte';
+    import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
+    import ChooseModeComponent from '$lib/components/choose_mode_component.svelte';
   
     var current_view: Nemesis = 'none';
 
@@ -39,17 +37,9 @@
                 <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
                 <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
             </div>
-        {:else if current_view === 'rageborne'}
+        {:else}
             <div class="flex-1 h-full p-4">
-                <RageborneView />
-            </div>
-        {:else if current_view === 'carapace_queen'}
-            <div class="flex-1 h-full p-4">
-                <CarapaceQueenView />
-            </div>
-        {:else if current_view === 'wayward_one'}
-            <div class="flex-1 h-full p-4">
-                <WaywardOneView />
+                <ChooseModeComponent {current_view} />
             </div>
         {/if}
     </main>
