@@ -15,21 +15,21 @@
             class="w-72 h-14 text-base"
             onclick={() => {GameDeckM.game_mode = "no_upgrade"}}
         >
-            Basic Commons
+            Basics Only
         </Button>
         <Button
             variant="outline"
             class="w-72 h-14 text-base border-primary/40 text-primary hover:bg-primary/10"
             onclick={() => {GameDeckM.game_mode = "yes_upgrade"}}
         >
-            Upgraded Commons
+            Upgraded Basics
         </Button>
         <Button
             variant="outline"
             class="w-72 h-14 text-base"
             onclick={() => {GameDeckM.game_mode = "mixed"}}
         >
-            Mixed Commons
+            Mixed
         </Button>
     </div>
 {:else}
