@@ -39,7 +39,7 @@
     });
 </script>
 
-<Card.Root class={cn("w-80 h-[22rem] overflow-hidden relative flex flex-col", type_bg, ring_class)}>
+<Card.Root class={cn("w-72 h-[18rem] shrink-0 overflow-hidden relative flex flex-col", type_bg, ring_class)}>
     {#if card_data === undefined}
         <Card.Content class="flex-1 flex items-center justify-center p-6">
             <p class="text-muted-foreground text-sm">No more cards</p>

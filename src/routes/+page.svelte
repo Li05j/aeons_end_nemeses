@@ -16,7 +16,7 @@
                 <p class="text-lg text-muted-foreground">Choose a Nemesis from the sidebar.</p>
             </div>
         {:else}
-            <div class="flex-1 h-full p-4">
+            <div class="flex-1 h-full p-4 min-w-0">
                 <ChooseModeComponent />
             </div>
         {/if}

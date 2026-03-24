@@ -6,7 +6,7 @@
     let { card_data }: { card_data: RageborneStrikeCard | undefined } = $props();
 </script>
 
-<Card.Root class="w-80 h-[22rem] overflow-hidden bg-strike-bg border-strike/40 ring-2 ring-strike ring-offset-2 ring-offset-background">
+<Card.Root class="w-72 h-[18rem] shrink-0 overflow-hidden flex flex-col bg-strike-bg border-strike/40 ring-2 ring-strike ring-offset-2 ring-offset-background">
     {#if card_data === undefined}
         <Card.Content class="flex-1 flex items-center justify-center p-6 h-full">
             <p class="text-destructive text-sm">Error: Strike deck is empty.</p>
@@ -20,7 +20,7 @@
 
         <Separator class="mx-4 w-auto" />
 
-        <Card.Content class="pt-4">
+        <Card.Content class="flex-1 pt-4 overflow-y-auto">
             <p class="whitespace-pre-line text-sm text-card-foreground/85 leading-relaxed">{card_data.description}</p>
         </Card.Content>
     {/if}
