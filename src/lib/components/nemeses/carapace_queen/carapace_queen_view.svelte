@@ -11,12 +11,12 @@
 </script>
 
 <div class="relative h-full flex flex-col min-w-0">
-    <div class="flex-1 flex gap-6 p-6">
+    <div class="flex items-start gap-6 p-6">
         <div class="shrink-0">
             <NemesisCardComponent card_data={GameDeckM.current_card} is_current_card={true}/>
         </div>
 
-        <div class="flex items-start pt-2">
+        <div class="flex-1 flex justify-center">
             <CarapaceQueenHuskTrackComponent husks_count={vm.husks_count} />
         </div>
     </div>
