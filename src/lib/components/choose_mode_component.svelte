@@ -24,6 +24,13 @@
         >
             Upgraded Commons
         </Button>
+        <Button
+            variant="outline"
+            class="w-72 h-14 text-base"
+            onclick={() => {GameDeckM.game_mode = "mixed"}}
+        >
+            Mixed Commons
+        </Button>
     </div>
 {:else}
     {#if appState.current_view === 'rageborne'}

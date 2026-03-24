@@ -8,7 +8,7 @@ const COMMON_T2_COUNT = 7;
 const COMMON_T3_COUNT = 7;
 
 function createGameDeckManager() {
-    let game_mode: "no_upgrade" | "yes_upgrade" | "none" = $state("none");
+    let game_mode: "no_upgrade" | "yes_upgrade" | "mixed" | "none" = $state("none");
 
     let combined_deck: NemesisCard[] = $state([]);
     let resolved_deck: NemesisCard[] = $state([]);
@@ -20,6 +20,10 @@ function createGameDeckManager() {
     function pickCommonCards(upgraded: NemesisCard[], basic: NemesisCard[], count: number): NemesisCard[] {
         if (game_mode === "no_upgrade") {
             return shuffle_array(basic).slice(0, count);
+        }
+
+        if (game_mode === "mixed") {
+            return shuffle_array([...basic, ...upgraded]).slice(0, count);
         }
 
         const shuffled = shuffle_array(upgraded);
