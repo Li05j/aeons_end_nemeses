@@ -1,173 +1,51 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { 
-        basic_common_t1_nemesis_cards, 
-        basic_common_t2_nemesis_cards, 
-        basic_common_t3_nemesis_cards,
-        upgraded_common_t1_nemesis_cards,
-        upgraded_common_t2_nemesis_cards,
-        upgraded_common_t3_nemesis_cards,
-    } from '$lib/stores/common_nemesis_cards_store';
-
-    import { shuffle_array } from '$lib/utils';
     import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
-    import type { NemesisCard } from '$lib/types';
-    
-    ///////////////////////////////////////////////////
-
-    import {
-        wayward_one_t1_nemesis_cards,
-        wayward_one_t2_nemesis_cards,
-        wayward_one_t3_nemesis_cards,
-    } from '$lib/stores/specific_nemesis_cards_store';
     import WaywardOneBreachAlign from './wayward_one_breach_align.svelte';
+    import { GameDeckM } from '$lib/stores/game_deck_manager_store.svelte';
+    import { WaywardOneViewModel } from './wayward_one_view.svelte.ts';
+    import { Button } from '$lib/components/ui/button/index.js';
 
-    let breach_align: 1 | 2 | 3 | 4 = $state(1);
-
-    function next_align_breach() {
-        if (breach_align === 4) {
-            breach_align = 1;
-        } else {
-            breach_align++;
-        }
-    }
-
-    ///////////////////////////////////////////////////
-
-    // To prevent rapid clicking on Next Turn button
-    let isOnCooldown = $state(false);
-    
-    function nextTurnClickCooldown(cooldown: number = 750) {
-        if (isOnCooldown) return;
-        
-        // Start cooldown
-        isOnCooldown = true;
-        setTimeout(() => {
-            isOnCooldown = false;
-        }, cooldown);
-    }
-
-    const TOTAL_COMMON_T1_CARDS = 8;
-    const TOTAL_COMMON_T2_CARDS = 7;
-    const TOTAL_COMMON_T3_CARDS = 7;
-
-    let current_card: NemesisCard | undefined = $state(undefined);
-    let combined_deck: NemesisCard[] = $state([]);
-    let cards_on_field: NemesisCard[] = $state([]);
-    let resolved_deck: NemesisCard[] = $state([]);
-
-    function buildTierDeck(upgradedCards: NemesisCard[], basicCards: NemesisCard[], totalNeeded: number) {
-        const shuffledUpgraded = shuffle_array(upgradedCards);
-        const upgradedToUse = shuffledUpgraded.slice(0, totalNeeded);
-        
-        if (upgradedToUse.length >= totalNeeded) {
-            return upgradedToUse;
-        }
-
-        const basicNeeded = totalNeeded - upgradedToUse.length;
-        const shuffledBasic = shuffle_array(basicCards);
-        const basicToUse = shuffledBasic.slice(0, basicNeeded);
-
-        return [...upgradedToUse, ...basicToUse];
-    }
-
-    onMount(() => {
-        const common_t1_deck = buildTierDeck($upgraded_common_t1_nemesis_cards, $basic_common_t1_nemesis_cards, TOTAL_COMMON_T1_CARDS);
-        const common_t2_deck = buildTierDeck($upgraded_common_t2_nemesis_cards, $basic_common_t2_nemesis_cards, TOTAL_COMMON_T2_CARDS);
-        const common_t3_deck = buildTierDeck($upgraded_common_t3_nemesis_cards, $basic_common_t3_nemesis_cards, TOTAL_COMMON_T3_CARDS);
-
-        const t1_deck = shuffle_array([...$wayward_one_t1_nemesis_cards, ...common_t1_deck]);
-        const t2_deck = shuffle_array([...$wayward_one_t2_nemesis_cards, ...common_t2_deck]);
-        const t3_deck = shuffle_array([...$wayward_one_t3_nemesis_cards, ...common_t3_deck]);
-
-        combined_deck = structuredClone([...t1_deck, ...t2_deck, ...t3_deck]);
-        next_turn()
-    });
-    
-    function next_turn() {
-        nextTurnClickCooldown();
-        if (combined_deck.length > 0) {
-            if (current_card) { resolved_deck.push(current_card); }
-            current_card = combined_deck.shift();
-            combined_deck = [...combined_deck] // To trigger reactivity
-        }
-        else {
-            current_card = undefined;
-        }
-
-        for (let i = 0; i < cards_on_field.length; i++) {
-            let card = cards_on_field[i];
-            if (card.type === 'power' && card.power <= 0) {
-                cards_on_field.splice(i, 1);
-                i--; // Adjust index after removal
-            } else if (card.type === 'minion' && card.health <= 0) {
-                cards_on_field.splice(i, 1);
-                i--; // Adjust index after removal
-            }
-        }
-
-        for (let i = 0; i < cards_on_field.length; i++) {
-            let card = cards_on_field[i];
-            if (card.type === 'power') {
-                card.power--;
-            }
-        }
-        
-        if (current_card) {
-            const type = current_card.type;
-            switch (type) {
-                case 'attack':
-                    break;
-                case 'power':
-                    cards_on_field = [current_card, ...cards_on_field];
-                    break;
-                case 'minion':
-                    cards_on_field = [current_card, ...cards_on_field];
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        cards_on_field = [...cards_on_field] // To trigger reactivity
-    }
-
+    const vm = new WaywardOneViewModel();
+    onMount(() => vm.init());
 </script>
 
-<div class="relative h-full grid grid-cols-3 grid-rows-2">
-    <!-- Top left -->
-    <div style="background-color: #aaaaba" class="flex items-center justify-center">
-        <NemesisCardComponent card_data={current_card} is_current_card={true}/>
-    </div>
-    
-    <!-- Top Right -->
-    <div class="col-span-2 h-full flex items-center justify-center text-center">
-        <WaywardOneBreachAlign {breach_align} />
-    </div>
-    
-    <!-- Bottom half -->
-    <div class="col-span-3 flex">
-        {#each cards_on_field as card}
-            <div class="p-2">
-                <NemesisCardComponent card_data={card} is_current_card={card === current_card} />
-            </div>
-        {/each}
+<div class="relative h-full flex flex-col">
+    <div class="flex-1 flex gap-6 p-6">
+        <div class="shrink-0">
+            <NemesisCardComponent card_data={GameDeckM.current_card} is_current_card={true}/>
+        </div>
+
+        <div class="flex items-start pt-2">
+            <WaywardOneBreachAlign breach_align={vm.breach_align} />
+        </div>
     </div>
 
-    <div class="absolute bottom-4 right-4 space-x-2">
-        <button 
-            class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-            onclick={() => next_align_breach()}
-            disabled={isOnCooldown}
-        >
-            Shift Position 
-        </button>
-        <button
-            class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded w-56 {isOnCooldown ? 'opacity-50 cursor-not-allowed' : ''}"
-            onclick={() => next_turn()}
-            disabled={isOnCooldown}
-        >
-            Next Turn ({combined_deck.length} cards left)
-        </button>
+    <div class="border-t border-border px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex gap-2 flex-wrap flex-1 overflow-x-auto">
+                {#each GameDeckM.cards_on_field as card}
+                    <NemesisCardComponent card_data={card} is_current_card={card === GameDeckM.current_card} />
+                {/each}
+            </div>
+
+            <div class="flex gap-2 shrink-0 ml-4">
+                <Button
+                    variant="destructive"
+                    class="w-44"
+                    onclick={() => vm.nextAlignBreach()}
+                    disabled={GameDeckM.is_on_cooldown}
+                >
+                    Shift Position
+                </Button>
+                <Button
+                    class="w-52"
+                    onclick={() => GameDeckM.nextTurn()}
+                    disabled={GameDeckM.is_on_cooldown}
+                >
+                    Next Turn ({GameDeckM.cards_left} left)
+                </Button>
+            </div>
+        </div>
     </div>
 </div>

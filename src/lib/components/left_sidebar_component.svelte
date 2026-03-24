@@ -1,46 +1,35 @@
 <script lang="ts">
-    export let change_view: (which: string) => void;
+    import { LeftSidebarViewModel } from './left_sidebar_component.svelte.ts';
+    import { Button } from '$lib/components/ui/button/index.js';
+    import { Separator } from '$lib/components/ui/separator/index.js';
 
-    const sidebar_items: string[] = ['Rageborne', 'Carapace Queen', 'Wayward One', 'Soon', 'Soon'];
-    let isOpen = true;
-    let showContent = true;
-
-    function toggleSidebar() {
-        isOpen = !isOpen;
-        // no delay when closing
-        if (isOpen === false) {
-            showContent = false;
-        }
-    }
-
-    function onItemClick(item: string) {
-        change_view(item);
-        toggleSidebar();
-    }
-
+    const vm = new LeftSidebarViewModel();
 </script>
 
-<div class="bg-gray-800 text-white h-screen transition-all duration-300 ease-in-out drop-shadow-2xl 
-    {isOpen ? 'w-48' : 'w-12'}" 
-    on:transitionend={() => showContent = isOpen}
+<div
+    class="bg-card border-r border-border text-card-foreground h-screen transition-all duration-300 ease-in-out shadow-lg
+    {vm.isOpen ? 'w-52' : 'w-12'}"
+    ontransitionend={() => vm.onTransitionEnd()}
 >
-    <button 
-        class="w-full p-4 text-left hover:bg-gray-700 border-b border-gray-700"
-        on:click={toggleSidebar}
+    <button
+        class="w-full h-12 flex items-center justify-center hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+        onclick={() => vm.toggleSidebar()}
     >
-        {showContent ? '← Nemeses' : '→'}
+        {vm.showContent ? '←' : '→'}
     </button>
 
-    <!-- Menu items -->
-    {#if showContent}
-        <nav class="p-4 space-y-2">
-            {#each sidebar_items as item}
-                <button 
-                    class="w-full p-3 text-left hover:bg-gray-700 rounded transition-colors"
-                    on:click={() => onItemClick(item)}
+    <Separator />
+
+    {#if vm.showContent}
+        <nav class="p-2 space-y-1">
+            {#each vm.sidebar_items as item}
+                <Button
+                    variant="ghost"
+                    class="w-full justify-start text-muted-foreground hover:text-foreground {item === 'Soon' ? 'opacity-30 pointer-events-none' : ''}"
+                    onclick={() => vm.onItemClick(item)}
                 >
                     {item}
-                </button>
+                </Button>
             {/each}
         </nav>
     {/if}

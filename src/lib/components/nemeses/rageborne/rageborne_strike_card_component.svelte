@@ -1,24 +1,27 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
-    import type { NemesisCard, RageborneStrikeCard } from '$lib/types';
+    import type { RageborneStrikeCard } from '$lib/types';
+    import * as Card from '$lib/components/ui/card/index.js';
+    import { Separator } from '$lib/components/ui/separator/index.js';
 
-    export let card_data: RageborneStrikeCard | undefined;
-
+    let { card_data }: { card_data: RageborneStrikeCard | undefined } = $props();
 </script>
 
-<div class="bg-pink-200 border-4 border-red-500 p-4 space-y-4 card-hover overflow-hidden w-84 h-96">
+<Card.Root class="w-80 h-[22rem] overflow-hidden bg-strike-bg border-strike/40 ring-2 ring-strike ring-offset-2 ring-offset-background">
     {#if card_data === undefined}
-        <p class="text-center text-gray-500">Error: There should be cards but nothing is found.</p>
-        <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
+        <Card.Content class="flex-1 flex items-center justify-center p-6 h-full">
+            <p class="text-destructive text-sm">Error: Strike deck is empty.</p>
+        </Card.Content>
     {:else}
-        <header class="pb-0">
-            <h6 class="text-black text-lg font-bold text-center my-0">Strike: {card_data.title}</h6>
-        </header>
+        <Card.Header>
+            <Card.Title class="text-strike text-center">
+                Strike: {card_data.title}
+            </Card.Title>
+        </Card.Header>
 
-        <hr class="h-1 bg-black border-0 opacity-75 mt-0" />
+        <Separator class="mx-4 w-auto" />
 
-        <div>
-            <p class="whitespace-pre-line pb-4">{card_data.description}</p>
-        </div>
+        <Card.Content class="pt-4">
+            <p class="whitespace-pre-line text-sm text-card-foreground/85 leading-relaxed">{card_data.description}</p>
+        </Card.Content>
     {/if}
-</div>
+</Card.Root>

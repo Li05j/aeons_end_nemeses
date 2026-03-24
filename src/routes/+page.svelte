@@ -1,47 +1,23 @@
 <script lang="ts">
-    import type { Nemesis } from '$lib/types';
     import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
     import ChooseModeComponent from '$lib/components/choose_mode_component.svelte';
-    import { GameDeckM } from '$lib/stores/game_deck_manager_store.svelte';
-  
-    var current_view: Nemesis = 'none';
-
-    function change_view(item: string) {
-        GameDeckM.reset()
-        switch (item) {
-            case 'Rageborne':
-                current_view = 'rageborne';
-                break;
-            case 'Carapace Queen':
-                current_view = 'carapace_queen';
-                break;
-            case 'Wayward One':
-                current_view = 'wayward_one';
-                break;
-            case 'Soon':
-                current_view = 'none';
-                break;
-            default:
-                current_view = 'none';
-        }
-    }
-
+    import { appState } from '$lib/state/app-state.svelte';
 </script>
 
 <div class="relative h-screen">
     <div class="fixed left-0 top-0 h-full z-50">
-        <LeftSidebar change_view={change_view} />
+        <LeftSidebar />
     </div>
 
-    <main class="h-full pl-16 pr-8 flex items-center justify-center bg-surface-50">
-        {#if current_view === 'none'}
-            <div class="text-center">
-                <h1 class="h1 text-surface-900 mb-4">Welcome</h1>
-                <p class="text-surface-600">Choose a Nemesis on the left sidebar.</p>
+    <main class="h-full pl-16 flex items-center justify-center">
+        {#if appState.current_view === 'none'}
+            <div class="text-center space-y-3">
+                <h1 class="text-4xl font-bold tracking-tight text-foreground">Aeon's End</h1>
+                <p class="text-lg text-muted-foreground">Choose a Nemesis from the sidebar.</p>
             </div>
         {:else}
             <div class="flex-1 h-full p-4">
-                <ChooseModeComponent {current_view} />
+                <ChooseModeComponent />
             </div>
         {/if}
     </main>
