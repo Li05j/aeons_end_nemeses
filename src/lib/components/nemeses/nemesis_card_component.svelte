@@ -68,34 +68,37 @@
             {#if card_data.type === 'power'}
                 <div class="flex items-center gap-2">
                     <span class="text-xs text-power font-medium">Power</span>
-                    <input
-                        type="number"
-                        bind:value={card_data.power}
-                        class="w-14 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground"
-                        min="-1"
-                    />
+                    <button
+                        class="w-8 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground cursor-pointer select-none active:bg-background/80 transition-colors"
+                        onclick={() => { card_data.power--; }}
+                        oncontextmenu={(e) => { e.preventDefault(); card_data.power++; }}
+                    >
+                        {card_data.power}
+                    </button>
                 </div>
             {:else if card_data.type === 'minion'}
                 <div class="flex items-center gap-3">
-                    {#if card_data.shield}
+                    {#if card_data.shield !== undefined}
                         <div class="flex items-center gap-1.5">
                             <span class="text-xs text-minion font-medium">Shield</span>
-                            <input
-                                type="number"
-                                bind:value={card_data.shield}
-                                class="w-14 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground"
-                                min="0"
-                            />
+                            <button
+                                class="w-8 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground cursor-pointer select-none active:bg-background/80 transition-colors"
+                                onclick={() => { card_data.shield = Math.max(0, card_data.shield! - 1); }}
+                                oncontextmenu={(e) => { e.preventDefault(); card_data.shield!++; }}
+                            >
+                                {card_data.shield}
+                            </button>
                         </div>
                     {/if}
                     <div class="flex items-center gap-1.5">
                         <span class="text-xs text-minion font-medium">HP</span>
-                        <input
-                            type="number"
-                            bind:value={card_data.health}
-                            class="w-14 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground"
-                            min="0"
-                        />
+                        <button
+                            class="w-8 h-7 text-center text-sm bg-background/50 border border-input rounded-md text-foreground cursor-pointer select-none active:bg-background/80 transition-colors"
+                            onclick={() => { card_data.health = Math.max(0, card_data.health - 1); }}
+                            oncontextmenu={(e) => { e.preventDefault(); card_data.health++; }}
+                        >
+                            {card_data.health}
+                        </button>
                     </div>
                 </div>
             {:else}
