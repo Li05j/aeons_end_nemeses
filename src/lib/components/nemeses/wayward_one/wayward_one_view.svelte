@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import NemesisCardComponent from '$lib/components/nemeses/nemesis_card_component.svelte';
+    import GamePlayfield from '$lib/components/game_playfield.svelte';
     import WaywardOneBreachAlign from './wayward_one_breach_align.svelte';
     import { GameDeckM } from '$lib/stores/game_deck_manager_store.svelte';
     import { WaywardOneViewModel } from './wayward_one_view.svelte.ts';
@@ -10,26 +10,14 @@
     onMount(() => vm.init());
 </script>
 
-<div class="relative h-full flex flex-col min-w-0">
-    <div class="flex-1 flex gap-6 p-6">
-        <div class="shrink-0">
-            <NemesisCardComponent card_data={GameDeckM.current_card} is_current_card={true}/>
-        </div>
-
+<GamePlayfield>
+    {#snippet nemesis_content()}
         <div class="flex items-start pt-2">
             <WaywardOneBreachAlign breach_align={vm.breach_align} />
         </div>
-    </div>
+    {/snippet}
 
-    <div class="border-t border-border overflow-x-auto px-6 pt-4 pb-14 min-w-0">
-        <div class="flex gap-2">
-            {#each GameDeckM.cards_on_field as card}
-                <NemesisCardComponent card_data={card} is_current_card={card === GameDeckM.current_card} />
-            {/each}
-        </div>
-    </div>
-
-    <div class="fixed bottom-5 right-6 z-10 flex gap-2">
+    {#snippet action_buttons()}
         <Button
             variant="destructive"
             class="w-44"
@@ -45,5 +33,5 @@
         >
             Next Turn ({GameDeckM.cards_left} left)
         </Button>
-    </div>
-</div>
+    {/snippet}
+</GamePlayfield>

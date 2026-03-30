@@ -42,7 +42,7 @@ Each nemesis has a view model class (`.svelte.ts`) that owns its unique mechanic
 
 4. **Register in 3 places:**
    - `src/lib/state/app-state.svelte.ts` — Add a `case` in `changeView()`.
-   - `src/lib/components/choose_mode_component.svelte` — Import the view and add an `{:else if}` branch.
+   - `src/lib/components/game_view.svelte` — Import the view and add an `{:else if}` branch.
    - `src/lib/components/left_sidebar_component.svelte.ts` — Add the display name to `sidebar_items`.
 
 Steps 1-3 are the real work. Step 4 is boilerplate across 3 files — a future registry pattern could eliminate it, but it's not worth the abstraction at this scale.

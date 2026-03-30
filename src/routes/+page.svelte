@@ -1,6 +1,6 @@
 <script lang="ts">
     import LeftSidebar from '$lib/components/left_sidebar_component.svelte';
-    import ChooseModeComponent from '$lib/components/choose_mode_component.svelte';
+    import ChooseModeComponent from '$lib/components/game_view.svelte';
     import { appState } from '$lib/state/app-state.svelte';
 </script>
 
